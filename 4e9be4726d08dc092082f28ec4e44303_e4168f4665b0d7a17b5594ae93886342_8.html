@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>快来领取你的年度睡眠奖！</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 0;
+            background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
+        }
+
+        header {
+            background-color: rgba(47, 115, 163, 0.8);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
+            background-size: cover;
+            font-style: italic;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 32px;
+        }
+
+        h1 span {
+            display: block;
+            font-size: 32px;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-top: 50px;
+        }
+
+        .question-box {
+            background-color: rgba(255, 255, 255, 0.7);
+            border: 2px solid #2f73a3;
+            padding: 20px;
+            margin: 15px 0;
+            width: 300px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
+        }
+
+        .question-box select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid #2f73a3;
+            border-radius: 5px;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .question-box select:focus {
+            border-color: #1e5b8d;
+        }
+
+        footer {
+            background-color: #2f73a3;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 60px;
+            width: 100%;
+        }
+
+        .next-btn {
+            background-color: #2f73a3;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            margin-top: 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .next-btn:hover {
+            background-color: #1e5b8d;
+        }
+
+        .result-container {
+            display: none;
+            text-align: center;
+            background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
+            padding-bottom: 30px;
+        }
+
+        .result-container p {
+            font-size: 20px;
+            margin-top: 20px;
+        }
+
+        .label {
+            background-color: rgba(47, 115, 163, 0.7);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin: 5px;
+            display: inline-block;
+            background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
+        }
+
+        .label-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .label-container .label {
+            margin-right: 10px;
+        }
+
+        footer p {
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .emoji {
+            font-size: 20px;
+            margin-left: 10px;
+        }
+
+        .next-btn .emoji {
+            font-size: 24px;
+        }
+
+        .additional-text {
+            font-size: 18px;
+            margin-top: 20px;
+            color: #2f73a3;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1><span>快来领取</span><span>你的年度睡眠奖！ 🌙✨</span></h1>
+</header>
+
+<div class="container" id="question-container">
+    <div class="question-box">
+        <p>平时几点睡？ 🌙</p>
+        <select id="sleep-time">
+            <option value="11前">十一点前</option>
+            <option value="11-12">十一点至十二点</option>
+            <option value="12后">十二点后</option>
+        </select>
+    </div>
+
+    <div class="question-box">
+        <p>平时几点起？ 🌅</p>
+        <select id="wake-time">
+            <option value="7前">七点前</option>
+            <option value="7-9">七至九点</option>
+            <option value="9后">九点后</option>
+        </select>
+    </div>
+
+    <div class="question-box">
+        <p>平均睡眠时间？ 💤</p>
+        <select id="sleep-duration">
+            <option value="少于7小时">少于七小时</option>
+            <option value="7-10小时">七至十小时</option>
+            <option value="10小时以上">十小时以上</option>
+        </select>
+    </div>
+
+    <button class="next-btn" onclick="showResults()">提交 🌟</button>
+</div>
+
+<div class="result-container" id="result-container">
+    <h2>你的年度睡眠奖</h2>
+    <p id="result-message"></p>
+    <div class="label-container" id="sleep-labels"></div>
+    <p class="additional-text">世界睡眠日，好好休息哦！ 🌙💤</p>
+    <footer>
+        <p>© 2025 睡眠奖 | 保证优质睡眠</p>
+        <p>湘农青年出品 🌟</p>
+    </footer>
+</div>
+
+<script>
+    function showResults() {
+        // 获取选择的选项
+        const sleepTime = document.getElementById('sleep-time').value;
+        const wakeTime = document.getElementById('wake-time').value;
+        const sleepDuration = document.getElementById('sleep-duration').value;
+
+        // 定义标签
+        const sleepTimeLabel = {
+            '11前': '早睡星人 🌙',
+            '11-12': '轻微夜猫 🦉',
+            '12后': '资深熬夜党 🌚'
+        };
+
+        const wakeTimeLabel = {
+            '7前': '早起达人 🌅',
+            '7-9': '正常生活 🕒',
+            '9后': '起床困难 🛏️'
+        };
+
+        const sleepDurationLabel = {
+            '少于7小时': '睡眠告急 要多休息！ 💤',
+            '7-10小时': '勉强够用 建议午睡！ 😴',
+            '10小时以上': '充足睡眠 切勿贪多！ 🌙'
+        };
+
+        // 设置结果消息
+        const resultMessage = `你选择了：`;
+
+        // 生成标签
+        const sleepLabels = `
+            <div class="label">${sleepTimeLabel[sleepTime]}</div>
+            <div class="label">${wakeTimeLabel[wakeTime]}</div>
+            <div class="label">${sleepDurationLabel[sleepDuration]}</div>
+        `;
+
+        // 隐藏问题界面，显示结果界面
+        document.getElementById('question-container').style.display = 'none';
+        document.getElementById('result-container').style.display = 'block';
+        document.getElementById('result-message').textContent = resultMessage;
+        document.getElementById('sleep-labels').innerHTML = sleepLabels;
+    }
+</script>
+
+</body>
+</html>
